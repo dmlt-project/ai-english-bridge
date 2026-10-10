@@ -60,10 +60,39 @@ let current="m5",kind="positive";
 const labels={positive:"POSITIVE SENTENCE",negative:"NEGATIVE SENTENCE",question:"QUESTION"};
 const norm=s=>s.toLowerCase().replace(/[’‘`]/g,"'").replace(/[.!?,]/g,"").replace(/\\s+/g," ").trim();
 function buildList(){const list=document.getElementById("moduleList");list.innerHTML="";modules.forEach(m=>{const b=document.createElement("button");b.className="module-btn"+(m.id===current?" active":"");b.innerHTML="<strong>"+m.title+"</strong><small>"+m.subtitle+"</small>";b.onclick=()=>selectModule(m.id);list.appendChild(b)})}
-function selectModule(id){current=id;kind="positive";buildList();const m=modules.find(x=>x.id===id);document.getElementById("modulePill").textContent=m.title.toUpperCase();document.getElementById("moduleTitle").textContent=m.subtitle;document.getElementById("moduleIntro").textContent="Grammar: "+m.grammar+". Vocabulary: "+m.vocab+".";document.getElementById("missionTitle").textContent=m.mission;document.getElementById("missionText").textContent="Миссия: "+m.mission+". Қазақша сөйлемді ағылшын тіліне аударып, осы тақырыпқа байланысты өзің бір сөйлем құрастыр.";document.getElementById("videoWrap").style.display=id==="m5"?"block":"none";selectKind("positive");}
+function selectModule(id){current=id;kind="positive";buildList();const m=modules.find(x=>x.id===id);document.getElementById("modulePill").textContent=m.title.toUpperCase();document.getElementById("moduleTitle").textContent=m.subtitle;document.getElementById("moduleIntro").textContent="Grammar: "+m.grammar+". Vocabulary: "+m.vocab+".";document.getElementById("videoWrap").style.display=id==="m5"?"block":"none";selectKind("positive");}
 function selectKind(k){kind=k;document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.type===k));const m=modules.find(x=>x.id===current);document.getElementById("typeLabel").textContent=labels[k];document.getElementById("kazakhSentence").textContent=k==="positive"?m.kaz:(k==="negative"?m.kaz.replace(/[.!?]$/,"")+" емес.":"Сен "+m.kaz.replace(/^(Мен|Біз|Менің|Киіз үйдің ішінде|Айдаһар|Батыр)/i,"").replace(/[.!?]$/,"")+" ба?");if(current==="m5"){document.getElementById("kazakhSentence").textContent=k==="positive"?"Мен кеше Абай мұражайына бардым.":k==="negative"?"Мен кеше Абай мұражайына барған жоқпын.":"Сен кеше Абай мұражайына бардың ба?"}
 document.getElementById("hintText").textContent=m.hint;document.getElementById("answer").value="";const f=document.getElementById("feedback");f.className="feedback";f.textContent="";document.getElementById("missionFeedback").className="feedback";document.getElementById("missionFeedback").textContent=""}
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>selectKind(b.dataset.type)));
+
+function speakFeedback(text){
+  if(!("speechSynthesis" in window) || !text) return;
+  window.speechSynthesis.cancel();
+  const cleanText = text
+    .replace(/Show example answer/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if(!cleanText) return;
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+  utterance.lang = "en-US";
+  utterance.rate = 0.88;
+  window.speechSynthesis.speak(utterance);
+}
+function addSpeakButton(container){
+  if(!("speechSynthesis" in window)) return;
+  const oldButton = container.querySelector("[data-speak-feedback]");
+  if(oldButton) oldButton.remove();
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "secondary";
+  button.dataset.speakFeedback = "true";
+  button.style.marginTop = "9px";
+  button.textContent = "🔊 Listen to feedback";
+  button.onclick = () => speakFeedback(container.innerText);
+  container.appendChild(document.createElement("br"));
+  container.appendChild(button);
+}
+
 document.getElementById("checkBtn").onclick=async()=>{const m=modules.find(x=>x.id===current),answer=document.getElementById("answer").value.trim(),v=norm(answer),f=document.getElementById("feedback"),btn=document.getElementById("checkBtn");if(!v){f.className="feedback show warn";f.textContent="Алдымен жауабыңды жаз немесе микрофон арқылы айтып көр.";return}
 const promptByKind=kind==="positive"?m.kaz:kind==="negative"?(current==="m5"?"Мен кеше Абай мұражайына барған жоқпын.":m.kaz): (current==="m5"?"Сен кеше Абай мұражайына бардың ба?":m.kaz);
 f.className="feedback show";f.textContent="Жауабың тексеріліп жатыр…";btn.disabled=true;
@@ -83,7 +112,16 @@ try{
  else{f.className="feedback show warn";let tip=current==="m5"?(kind==="positive"?"Past Simple-де visit → visited.":kind==="negative"?"didn’t сөзінен кейін етістіктің бастапқы түрін қолдан.":"Сұрақты Did сөзінен баста; одан кейін етістіктің бастапқы түрін қолдан."):m.hint;f.textContent="💡 Good try! "+tip+" Жауабыңды тағы тексеріп көр.";
  const reveal=document.createElement("button");reveal.className="secondary";reveal.style.marginTop="9px";reveal.textContent="Show example answer";reveal.onclick=()=>{f.textContent="Үлгі жауап: "+expected;};f.appendChild(document.createElement("br"));f.appendChild(reveal)}
 }
-finally{btn.disabled=false}
+finally{
+  btn.disabled=false;
+  addSpeakButton(f);
+  const spokenFeedback = Array.from(f.childNodes)
+    .filter(node => !(node.nodeType === 1 && node.matches && node.matches("[data-speak-feedback]")))
+    .map(node => node.textContent || "")
+    .join(" ")
+    .trim();
+  if(spokenFeedback) speakFeedback(spokenFeedback);
+}
 };
 document.getElementById("clearBtn").onclick=()=>{document.getElementById("answer").value="";const f=document.getElementById("feedback");f.className="feedback";f.textContent=""};
 function setMuseumPrompt(k){selectModule("m5");selectKind(k);const p=document.getElementById("museumPrompt");p.textContent=k==="positive"?"Мен кеше Абай мұражайына бардым.":k==="negative"?"Мен кеше Абай мұражайына барған жоқпын.":"Сен кеше Абай мұражайына бардың ба?";document.getElementById("answer").focus();document.getElementById("missionFeedback").className="feedback";document.getElementById("missionFeedback").textContent="Тапсырма таңдалды! Енді жауабыңды ағылшынша аудар."}
@@ -92,6 +130,6 @@ document.getElementById("museumNegative").onclick=()=>setMuseumPrompt("negative"
 document.getElementById("museumQuestion").onclick=()=>setMuseumPrompt("question");
 document.getElementById("missionBtn").onclick=()=>{selectModule("m5");const f=document.getElementById("missionFeedback");f.className="feedback show";f.innerHTML="<b>🎯 Your mission:</b><br>1. Абай музейіне барғаның туралы болымды сөйлем айт.<br>2. Сол сөйлемді болымсыз түрге өзгерт.<br>3. Досыңа сұрақ қой.<br>4. Музей туралы өзің білетін немесе видеодан байқаған бір деректі ағылшынша айт.<br><br><b>Final task:</b> “Welcome to the Abai Museum!” деп бастап, 2–3 сөйлемдік шағын экскурсия жаса."};
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition,mb=document.getElementById("micBtn"),ms=document.getElementById("micStatus");
-if(SR){mb.onclick=()=>{const r=new SR();r.lang="en-US";r.interimResults=false;r.maxAlternatives=1;ms.textContent="Listening… Ағылшынша сөйлемді айтыңыз.";r.onresult=e=>{document.getElementById("answer").value=e.results[0][0].transcript;ms.textContent="Танылған сөйлем: "+e.results[0][0].transcript+" · Енді жауапты тексеріңіз."};r.onerror=e=>ms.textContent="Микрофон қатесі: "+e.error+". Браузер рұқсатын тексеріңіз.";r.start()}}else{mb.disabled=true;ms.textContent="Бұл браузерде сөйлеуді тану қолжетімсіз. Жауапты жазыңыз."}
+if(SR){mb.onclick=()=>{const r=new SR();r.lang="en-US";r.interimResults=false;r.maxAlternatives=1;ms.textContent="Listening… Ағылшынша сөйлемді айтыңыз.";r.onresult=e=>{document.getElementById("answer").value=e.results[0][0].transcript;ms.textContent="Танылған сөйлем: "+e.results[0][0].transcript+" · Енді жауапты тексеріңіз."};r.onerror=e=>{ms.textContent=e.error==="aborted"?"Сөйлеуді тану тоқтатылды. Микрофон түймесін қайта басып, сөйлемді тағы айтып көріңіз.":"Микрофон қатесі: "+e.error+". Сайтқа микрофон рұқсаты берілгенін және браузер қолдайтынын тексеріңіз."};r.onend=()=>{if(ms.textContent==="Listening… Ағылшынша сөйлемді айтыңыз.")ms.textContent="Сөйлеу аяқталды. Егер мәтін енгізілмесе, қайта айтып көріңіз."};r.start()}}else{mb.disabled=true;ms.textContent="Бұл браузерде сөйлеуді тану қолжетімсіз. Жауапты жазыңыз."}
 selectModule("m5");
 </script></body></html>
