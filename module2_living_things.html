@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Living things! | Let's Learn!</title>
+<style>
+:root{--blue:#2476d2;--navy:#17365d;--sky:#eaf5ff;--pink:#fff0f5;--green:#e8f8eb;--gold:#fff6dd;--ink:#203047;--muted:#62738a}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,"Trebuchet MS",sans-serif;color:var(--ink);background:linear-gradient(135deg,#e8f5ff,#fff2f7 55%,#fff9e8);min-height:100vh}
+header{background:#fff;padding:18px 20px;border-bottom:3px solid #d8eaff}
+.head{max-width:1000px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-size:1.25rem;font-weight:900;color:var(--navy);letter-spacing:.4px}
+.brand small{display:block;font-size:.72rem;letter-spacing:1.2px;color:var(--muted);margin-top:4px}
+nav a{display:inline-block;margin:4px;padding:9px 13px;border-radius:12px;text-decoration:none;font-weight:700;color:var(--blue);background:#eef6ff}
+main{max-width:920px;margin:22px auto;padding:0 14px 34px}
+.hero,.lesson{background:#fff;border:1px solid #e2eaf4;border-radius:22px;box-shadow:0 8px 24px #1d4c7a12}
+.hero{padding:20px 22px;margin-bottom:16px}
+.kicker{color:var(--blue);font-weight:800;font-size:.8rem;text-transform:uppercase;letter-spacing:1px}
+h1{margin:7px 0;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--navy)}
+.hero p{margin:6px 0;color:var(--muted);line-height:1.5}
+.progress{height:9px;background:#edf2f8;border-radius:20px;overflow:hidden;margin-top:14px}
+.progress span{display:block;height:100%;width:25%;background:linear-gradient(90deg,#52a7ff,#a68bff);transition:width .25s}
+.lesson{padding:18px;margin-bottom:14px}
+.lesson-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{background:#eaf4ff;color:#2369b3;padding:7px 11px;border-radius:999px;font-size:.82rem;font-weight:800}
+h2{font-size:1.25rem;color:var(--navy);margin:12px 0}
+video{display:block;width:100%;max-height:470px;background:#182333;border-radius:16px;margin:12px auto;object-fit:contain}
+.watch{font-size:.92rem;color:var(--muted);text-align:center;margin:8px 0 14px}
+.hint,.tip{padding:13px 15px;border-radius:15px;margin:12px 0;line-height:1.5}
+.hint{background:#eef6ff;border:1px solid #d9eaff}
+.tip{background:#fff8df;border:1px solid #f4e5a8}
+.hint strong,.tip strong{display:block;margin-bottom:5px}
+.task{background:#fbfcff;border:1px solid #e8edf5;border-radius:15px;padding:13px;margin:12px 0}
+.task label{display:block;font-weight:700;line-height:1.45;margin-bottom:8px}
+.task input{width:100%;padding:12px;border:2px solid #d7e2f0;border-radius:11px;font-size:1rem;outline:none}
+.task input:focus{border-color:#69a8ef}
+.feedback{margin-top:8px;font-size:.94rem;line-height:1.5}
+.correct{color:#177245;font-weight:800}
+.incorrect{color:#b53d46;font-weight:700}
+.answer{color:#177245;font-weight:800}
+.buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+button{border:0;border-radius:12px;padding:11px 15px;font-weight:800;font-size:.95rem;cursor:pointer}
+.primary{background:var(--blue);color:#fff}
+.secondary{background:#edf3fa;color:var(--navy)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.bottomnav{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:16px}
+.bottomnav button{min-width:120px}
+.counter{font-weight:800;color:var(--muted);font-size:.9rem}
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:8px 12px 24px}
+@media(max-width:560px){.hero{padding:17px}.lesson{padding:13px}.bottomnav button{min-width:0;flex:1}.brand{font-size:1.05rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="head">
+    <div class="brand">LET'S LEARN!<small>GRADE 5 · ENGLISH LEARNING</small></div>
+    <nav aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="modules.html">Modules</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <div class="kicker">Module 2 · Pages 21–32</div>
+    <h1>Living things!</h1>
+    <p>Watch each video, use the hint, and translate the Kazakh sentences into English.</p>
+    <div class="progress" aria-label="Module progress"><span id="progressBar"></span></div>
+  </section>
+  <section class="lesson" aria-live="polite">
+    <div class="lesson-top">
+      <span class="pill" id="videoNumber">Video 1 of 4</span>
+      <span class="pill" id="topicPill">Have got / Has got</span>
+    </div>
+    <h2 id="lessonTitle">Have got / Has got</h2>
+    <video id="lessonVideo" controls playsinline preload="metadata">
+      Your browser does not support HTML video.
+    </video>
+    <p class="watch">Watch the video to get a hint.</p>
+    <div class="hint" id="hintBox"></div>
+    <div id="tasks"></div>
+    <div class="buttons">
+      <button class="primary" id="checkBtn" type="button">Check your answers</button>
+      <button class="secondary" id="resetBtn" type="button">Try again</button>
+    </div>
+    <div class="bottomnav">
+      <button class="secondary" id="prevBtn" type="button">← Previous</button>
+      <span class="counter" id="counter">1 / 4</span>
+      <button class="primary" id="nextBtn" type="button">Next video →</button>
+    </div>
+  </section>
+</main>
+<footer>Let's Learn! · Learn English through everyday life and cultural heritage.</footer>
+<script>
+const lessons = [
+  {
+    title:"Have got / Has got",
+    video:"videos/module2_video1_have_got.mp4",
+    hint:"💡 Grammar Hint: <b>have got</b> — I / you / we / they and two or more people. <b>has got</b> — he / she / it and one person.",
+    tip:"Екі адам бірге айтылса, <b>have got</b> қолданылады. Бір адам туралы айтылса, <b>has got</b> қолданылады.",
+    tasks:[
+      {kk:"Арман мен Аиданың үш күшігі бар.", answer:"Arman and Aida have got three puppies."},
+      {kk:"Менің досымның кішкентай мысығы бар.", answer:"My friend has got a small cat."}
+    ]
+  },
+  {
+    title:"Possessive adjectives / possessive pronouns",
+    video:"videos/module2_video2_possessives.mp4",
+    hint:"💡 Grammar Hint: <b>his / her</b> go before a noun. <b>mine / yours</b> replace a noun.",
+    tip:"<b>His / her</b> сөздерінен кейін зат есім келеді: <i>his ball</i>, <i>her ball</i>. <b>Mine / yours</b> зат есімнің орнына қолданылады: <i>This book is mine.</i>",
+    tasks:[
+      {kk:"Бұл — оның (ұлдың) добы, ал анау — оның (қыздың) добы.", answer:"This is his ball, and that is her ball."},
+      {kk:"Мына кітап — менікі, ал ана дәптер — сенікі.", answer:"This book is mine, and that notebook is yours."}
+    ]
+  },
+  {
+    title:"Plurals",
+    video:"videos/module2_video3_plurals.mp4",
+    hint:"💡 Grammar Hint: <b>rabbit → rabbits</b> (add -s). <b>sheep → sheep</b> (the singular and plural forms are the same).",
+    tip:"Көптеген зат есімдердің көпше түріне <b>-s</b> жалғанады. Бірақ <b>sheep</b> сөзінің жекеше және көпше түрі бірдей болады.",
+    tasks:[
+      {kk:"Бақта бес қоян бар.", answer:"There are five rabbits in the garden."},
+      {kk:"Хайуанаттар бағында екі қой бар.", answer:"There are two sheep at the zoo."}
+    ]
+  },
+  {
+    title:"This / These – That / Those",
+    video:"videos/module2_video4_this_that_kubi.mp4",
+    hint:"Look at the video for the word <b>kubi</b>.",
+    tip:"<b>Күбі</b> — қымызды пісуге арналған дәстүрлі ағаш ыдыс. Ағылшын тілінде дәлме-дәл баламасы болмағандықтан, оны <b>kubi</b> деп жазамыз. Қажет болса, мағынасын түсіндіреміз: <i>kubi (a traditional Kazakh wooden vessel used to churn kumis).</i>",
+    tasks:[
+      {kk:"Мына күбі ағаштан жасалған.", answer:"This kubi is made of wood."},
+      {kk:"Ана ағаш биік.", answer:"That tree is tall."},
+      {kk:"Мына гүлдер әдемі.", answer:"These flowers are beautiful."},
+      {kk:"Анау қойлар ақ.", answer:"Those sheep are white."}
+    ]
+  }
+];
+
+let current = 0;
+const $ = id => document.getElementById(id);
+function normalize(s){
+  return s.toLowerCase().trim().replace(/[’‘`]/g,"'").replace(/[.!?]+$/g,"").replace(/\s+/g," ");
+}
+function renderLesson(){
+  const lesson = lessons[current];
+  $("videoNumber").textContent = `Video ${current+1} of ${lessons.length}`;
+  $("topicPill").textContent = lesson.title;
+  $("lessonTitle").textContent = lesson.title;
+  const video = $("lessonVideo");
+  video.pause();
+  video.src = lesson.video;
+  video.load();
+  $("hintBox").innerHTML = lesson.hint;
+  $("tasks").innerHTML = lesson.tasks.map((t,i)=>`
+    <div class="task">
+      <label for="answer${i}">${i+1}. ${t.kk}</label>
+      <input id="answer${i}" type="text" autocomplete="off" placeholder="Type your English translation">
+      <button class="secondary speak-btn" type="button" data-input="answer${i}" style="margin-top:8px">🎤 Speak</button>
+      <div id="feedback${i}" class="feedback" aria-live="polite"></div>
+    </div>`).join("") + `<div class="tip"><strong>💡 Translation Tip</strong>${lesson.tip}</div>`;
+  $("prevBtn").disabled = current===0;
+  $("nextBtn").textContent = current===lessons.length-1 ? "Finish ✓" : "Next video →";
+  $("counter").textContent = `${current+1} / ${lessons.length}`;
+  $("progressBar").style.width = `${((current+1)/lessons.length)*100}%`;
+}
+document.addEventListener("click", (event) => {
+  const btn = event.target.closest(".speak-btn");
+  if (!btn) return;
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    const feedback = btn.parentElement.querySelector(".feedback");
+    feedback.textContent = "Speech recognition is not supported in this browser. Please type your answer.";
+    feedback.className = "feedback incorrect";
+    return;
+  }
+  const recognition = new SpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  btn.textContent = "Listening…";
+  recognition.onresult = (e) => {
+    $(btn.dataset.input).value = e.results[0][0].transcript;
+  };
+  recognition.onerror = () => {
+    const feedback = btn.parentElement.querySelector(".feedback");
+    feedback.textContent = "Could not recognize speech. Please try again or type your answer.";
+    feedback.className = "feedback incorrect";
+  };
+  recognition.onend = () => { btn.textContent = "🎤 Speak"; };
+  recognition.start();
+});
+$("checkBtn").addEventListener("click",()=>{
+  const lesson=lessons[current];
+  lesson.tasks.forEach((t,i)=>{
+    const input=$(`answer${i}`), feedback=$(`feedback${i}`);
+    const good=normalize(input.value)===normalize(t.answer);
+    if(good){
+      feedback.innerHTML=`<span class="correct">✓ Correct! Well done!</span>`;
+    }else{
+      feedback.innerHTML=`<span class="incorrect">Not quite. Correct answer:</span><br><span class="answer">${t.answer}</span>`;
+    }
+  });
+});
+$("resetBtn").addEventListener("click",()=>{
+  lessons[current].tasks.forEach((_,i)=>{$(`answer${i}`).value="";$(`feedback${i}`).innerHTML="";});
+});
+$("prevBtn").addEventListener("click",()=>{if(current>0){current--;renderLesson();}});
+$("nextBtn").addEventListener("click",()=>{if(current<lessons.length-1){current++;renderLesson();}else{current=0;renderLesson();}});
+renderLesson();
+</script>
+</body>
+</html>
