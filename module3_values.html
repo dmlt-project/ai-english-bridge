@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Let's Learn! | Module 3 — Values</title>
+<style>
+:root{--blue:#1687e8;--deep:#1456a8;--pink:#f23883;--yellow:#ffbf24;--green:#21b77a;--ink:#12376a;--soft:#f4fbff}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI","Noto Sans",Arial,sans-serif;color:var(--ink);font-weight:400;background:linear-gradient(135deg,#e9f8ff 0%,#fff3fa 52%,#fff7dc 100%)}
+header{background:linear-gradient(105deg,#92e0ff,#e6f7ff);padding:24px max(18px,calc((100% - 1120px)/2));border-bottom:4px solid white;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+h1{margin:0;color:#1673d1;font-size:clamp(2.2rem,5vw,3.6rem);text-shadow:2px 3px 0 white}
+.subtitle{font-weight:700;margin-top:5px;line-height:1.4}
+.topic-box{background:#fff7dc;border:2px solid #ffda6b;border-radius:18px;padding:14px 18px;box-shadow:0 4px 0 #f4d77f;max-width:320px}
+.topic-box b{display:block;margin-bottom:6px}
+.topic-box ul{margin:0;padding-left:20px;line-height:1.6;font-weight:700}
+main{max-width:1160px;margin:20px auto;padding:0 16px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.step{border-radius:18px;padding:15px;display:flex;align-items:center;gap:12px;font-weight:800;box-shadow:0 3px 0 #dbe8f6}
+.step span{width:42px;height:42px;flex:0 0 42px;border-radius:50%;display:grid;place-items:center;color:white;font-size:22px}
+.step small{display:block;margin-top:4px}
+.pink{background:#ffe0ef}.pink span{background:var(--pink)}
+.yellow{background:#fff1bf}.yellow span{background:#ffad00}
+.green{background:#d8f8e8}.green span{background:var(--green)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:18px;align-items:start}
+.panel{background:#fff;border:3px solid white;border-radius:25px;overflow:hidden;box-shadow:0 8px 24px #8fb4d52b}
+.panel-title{padding:15px 18px;font-size:1.25rem;font-weight:800;display:flex;align-items:center;gap:10px}
+.video-title{background:#e5f6ff;color:#1673d1}
+.tasks-title{background:#ffe8f2;color:#e52d78}
+.pill{display:inline-block;background:#338df3;color:#fff;padding:8px 12px;border-radius:13px;font-size:.95rem}
+.video-wrap{padding:12px}
+video{width:100%;display:block;border-radius:16px;background:#172c49;max-height:370px}
+.grammar{margin:0 12px 14px;background:#e8f6ff;border:1px solid #b7e4ff;border-radius:17px;padding:14px 16px}
+.grammar h3{margin:0 0 8px;color:#1673d1}
+.grammar ul{margin:0;padding-left:20px;line-height:1.65}
+.tip{margin:12px 14px 15px;background:#fff5d6;border:1px solid #ffdc73;border-radius:16px;padding:12px 14px;font-size:.92rem;line-height:1.55}
+.tip strong{color:#0b72c9}
+.task{padding:15px 14px;border-bottom:1px solid #f2e8f0}
+.task:last-child{border-bottom:0}
+.task-head{display:flex;align-items:flex-start;gap:10px;font-weight:800;font-size:1.03rem;line-height:1.45}
+.num{flex:0 0 36px;height:36px;border-radius:50%;display:grid;place-items:center;color:white;background:var(--pink);font-weight:800;font-size:1.1rem}
+.kz{margin:9px 0 10px 46px;font-weight:800}
+.forms{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px 46px}
+.form-btn{border:1px solid #d4e3fa;border-radius:999px;background:#f4f8ff;color:#20538d;font-weight:800;padding:7px 10px;cursor:pointer}
+.form-btn.active{background:#eadfff;border-color:#a78bfa;color:#5931c9;box-shadow:0 2px 0 #c9b8ff}
+.answer-row{display:flex;flex-wrap:wrap;gap:8px;margin-left:46px;align-items:stretch}.answer-row .answer{flex:1 1 100%;max-width:100%}.answer-row .check,.answer-row .speak{flex:0 0 auto}
+.answer{min-width:0;flex:1 1 300px;width:100%;min-width:260px;border:1.5px solid #cbdcf7;border-radius:12px;padding:12px;font-size:1rem;color:#12376a}
+.btn{border:0;border-radius:12px;padding:10px 13px;font-weight:800;cursor:pointer;transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.check{background:#1696eb;color:white;box-shadow:0 3px 0 #0870bd}
+.speak{background:#eef4ff;color:#245c9c}
+.feedback{display:none;margin:10px 0 0 46px;padding:11px 13px;border-radius:12px;font-weight:700;line-height:1.5}
+.feedback.good{display:block;background:#d9f8e8;color:#087849;border:1px solid #8ce0b5}
+.feedback.bad{display:block;background:#fff0f0;color:#a52638;border:1px solid #ffb7bf}
+.correct-answer{color:#087849;background:#c8f4db;border-radius:7px;padding:2px 5px}
+
+
+.navigation{display:flex;justify-content:space-between;gap:10px;padding:0 12px 15px}
+.nav-btn{background:linear-gradient(100deg,#7a45f5,#168ce8);color:white;border-radius:999px;padding:11px 17px;font-weight:800;border:0;cursor:pointer}
+footer{text-align:center;color:#6484ad;font-size:.85rem;padding:22px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.topic-box{max-width:none;width:100%}}
+@media(max-width:480px){header{padding:18px}.answer-row{margin-left:0;flex-wrap:wrap}.answer{flex-basis:100%;min-width:0}.forms,.kz,.feedback{margin-left:0}.task-head{font-size:1rem}.btn{flex:1}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Module 3 — Values</h1>
+    <div class="subtitle">Learn English through Kazakh traditions and everyday life!</div>
+  </div>
+  <aside class="topic-box">
+    <b>✨ In this section, you will learn:</b>
+    <ul><li>Present Simple: + / − / ?</li><li>like, love, hate + V-ing</li><li>Kazakh cultural words</li></ul>
+  </aside>
+</header>
+<main>
+  <section class="steps" aria-label="Learning steps">
+    <div class="step pink"><span>▶</span><div>Step 1<small>Watch the video.</small></div></div>
+    <div class="step yellow"><span>✎</span><div>Step 2<small>Translate a sentence.</small></div></div>
+    <div class="step green"><span>✓</span><div>Step 3<small>Check your answer.</small></div></div>
+  </section>
+  <div class="layout">
+    <section class="panel">
+      <div class="video-wrap"><video id="lessonVideo" controls preload="metadata" playsinline>
+        <source src="videos/module3_video1_keli_kelsap.mp4" type="video/mp4">
+        Your browser does not support video playback.
+      </video></div>
+      <div class="grammar">
+        <h3>📘 Grammar note</h3>
+        <ul>
+          <li><b>Affirmative (+):</b> He/She/It + verb <b>-s/-es</b>.</li>
+          <li><b>Negative (−):</b> don’t / doesn’t + base verb.</li>
+          <li><b>Question (?):</b> Do / Does + subject + base verb?</li>
+          <li><b>like / love / hate + V-ing:</b> She loves <b>singing</b>.</li>
+        </ul>
+      </div>
+      <div class="tip">
+        <strong>💡 Translation Tip — Аудармаға кеңес</strong><br>
+        <span id="videoTip"><b>Келі мен келсап</b> – тары, бидай, т.б. дәнді дақылдарды ұнтақтайтын қатты ағаштан жасалған құрал. Ағылшынша: <i>keli</i> (a hard wooden mortar used to pound grains such as millet and wheat) and <i>kelsap</i> (a wooden pestle used with the keli). Қажет болған жағдайда түсіндірме қосуға болады.</span>
+      </div>
+      <div class="navigation">
+        <button class="nav-btn" id="prevVideo" type="button">← Previous video</button>
+        <button class="nav-btn" id="nextVideo" type="button">Next video →</button>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-title tasks-title">✏️ Translate the sentences</div>
+      <div id="tasks"></div>
+      
+    </section>
+  </div>
+</main>
+<footer>Let’s Learn! · Grade 5 · Bridging Tradition & Technology</footer>
+<script>
+const lessons = [
+ {video:0,title:"Keli and Kelsap",tip:"<b>Келі мен келсап</b> – тары, бидай, т.б. дәнді дақылдарды ұнтақтайтын қатты ағаштан жасалған құрал. <br><br>In English: <i>keli</i> (a hard wooden mortar used to pound grains such as millet and wheat) and <i>kelsap</i> (a wooden pestle used with the keli). Қажет болған жағдайда түсіндірме қосуға болады.",items:[
+  {kz:"Менің әжем келі мен келсап қолданады.",kzForms:{positive:"Менің әжем келі мен келсап қолданады.",negative:"Менің әжем келі мен келсап қолданбайды.",question:"Менің әжем келі мен келсап қолдана ма?"},forms:{positive:"My grandmother uses a keli and a kelsap.",negative:"My grandmother doesn’t use a keli and a kelsap.",question:"Does my grandmother use a keli and a kelsap?"},hint:"USE",note:"He/She/It формасында use → uses. Does/doesn’t кейін use бастапқы түрде жазылады."},
+  {kz:"Біз ата-әжемізге жиі барамыз.",kzForms:{positive:"Біз ата-әжемізге жиі барамыз.",negative:"Біз ата-әжемізге жиі бармаймыз.",question:"Біз ата-әжемізге жиі барамыз ба?"},forms:{positive:"We often visit our grandparents.",negative:"We don’t often visit our grandparents.",question:"Do we often visit our grandparents?"},hint:"VISIT",note:"We + visit. Болымсыз форма: We don’t often visit… Сұраулы форма: Do we often visit…?"}
+ ]},
+ {video:1,title:"Like, love and hate + V-ing",tip:"Like, love және hate етістіктерінен кейін әрекетті білдіретін етістікке -ing жалғанады: playing, singing, getting.",items:[
+  {kz:"Мен домбырада ойнағанды ұнатамын.",kzForms:{positive:"Мен домбырада ойнағанды ұнатамын.",negative:"Мен домбырада ойнағанды ұнатпаймын.",question:"Мен домбырада ойнағанды ұнатамын ба?"},forms:{positive:"I like playing the dombra.",negative:"I don’t like playing the dombra.",question:"Do I like playing the dombra?"},hint:"LIKE + PLAY",note:"Like + V-ing: like playing. Do/does немесе don’t/doesn’t қолданылса да, playing формасы сақталады."},
+  {kz:"Ол қазақша ән айтқанды жақсы көреді.",kzForms:{positive:"Ол қазақша ән айтқанды жақсы көреді.",negative:"Ол қазақша ән айтқанды жақсы көрмейді.",question:"Ол қазақша ән айтқанды жақсы көреді ме?"},forms:{positive:"She loves singing Kazakh songs.",negative:"She doesn’t love singing Kazakh songs.",question:"Does she love singing Kazakh songs?"},hint:"LOVE + SING",note:"She loves + V-ing. Болымсыз және сұраулы формаларда love негізгі формада болады, singing өзгермейді."},
+  {kz:"Олар ерте тұрғанды жек көреді.",kzForms:{positive:"Олар ерте тұрғанды жек көреді.",negative:"Олар ерте тұрғанды жек көрмейді.",question:"Олар ерте тұрғанды жек көреді ме?"},forms:{positive:"They hate getting up early.",negative:"They don’t hate getting up early.",question:"Do they hate getting up early?"},hint:"HATE + GET",note:"Hate + V-ing: hate getting up. Getting етістігінде -ing сақталады."}
+ ]}
+];
+const formLabels={positive:"Affirmative",negative:"Negative",question:"Interrogative"};
+let currentVideo=0;
+const tasksRoot=document.getElementById("tasks");
+const video=document.getElementById("lessonVideo");
+function escapeHTML(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function render(){
+ const lesson=lessons[currentVideo];
+ document.getElementById("videoTip").innerHTML=lesson.tip;
+ video.pause();
+ const videoSources=["videos/module3_video1_keli_kelsap.mp4","videos/module3_video2_like_love_hate.mp4"];
+ if(videoSources[currentVideo]){
+   video.style.display="block"; video.src=videoSources[currentVideo]; video.load();
+ }else{
+   video.removeAttribute("src"); video.load(); video.style.display="none";
+   const wrap=video.parentElement;
+   let note=wrap.querySelector(".missing-video-note");
+   if(!note){note=document.createElement("div");note.className="missing-video-note";note.style.cssText="background:#e8f6ff;border:2px dashed #8bcfff;border-radius:16px;padding:28px;text-align:center;font-weight:700;color:#1456a8;line-height:1.6";wrap.appendChild(note);}
+   note.textContent="Video not available yet."
+ }
+ const existingNote=video.parentElement.querySelector(".missing-video-note");
+ if(videoSources[currentVideo] && existingNote) existingNote.remove();
+ video.load();
+ tasksRoot.innerHTML="";
+ lesson.items.forEach((item,i)=>{
+  const task=document.createElement("article");task.className="task";
+  task.innerHTML=`<div class="task-head"><span class="num">${i+1}</span><span class="kazakh-prompt">${escapeHTML(item.kzForms ? item.kzForms.positive : item.kz)}</span></div>
+   <div class="forms" role="group" aria-label="Choose sentence form">
+    <button type="button" class="form-btn active" data-form="positive">Affirmative</button>
+    <button type="button" class="form-btn" data-form="negative">Negative</button>
+    <button type="button" class="form-btn" data-form="question">Interrogative</button>
+   </div>
+   <div class="answer-row"><input class="answer" aria-label="Your English answer" placeholder="Type your answer here..." autocomplete="off">
+   <button type="button" class="btn check">Check my answer</button><button type="button" class="btn speak">🎙 Speak</button></div>
+   <div class="feedback" aria-live="polite"></div>`;
+  let selected="positive";
+  const buttons=[...task.querySelectorAll(".form-btn")],input=task.querySelector(".answer"),feedback=task.querySelector(".feedback");
+  buttons.forEach(btn=>btn.addEventListener("click",()=>{selected=btn.dataset.form;buttons.forEach(b=>b.classList.toggle("active",b===btn));task.querySelector(".kazakh-prompt").textContent=item.kzForms ? item.kzForms[selected] : item.kz;feedback.className="feedback";feedback.textContent="";}));
+  task.querySelector(".check").addEventListener("click",()=>{
+    const expected=item.forms[selected];
+    const normalize=s=>s.toLowerCase().replace(/[’‘`]/g,"'").replace(/[.,!?]/g,"").replace(/\s+/g," ").trim();
+    if(normalize(input.value)===normalize(expected)){
+      feedback.className="feedback good";feedback.innerHTML="🎉 Correct! Well done! 👏";playCheer();
+    }else{
+      feedback.className="feedback bad";feedback.innerHTML="Not quite. The correct answer is: <span class='correct-answer'>"+escapeHTML(expected)+"</span>";
+    }
+  });
+  task.querySelector(".speak").addEventListener("click",()=>{
+    const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SpeechRecognition){feedback.className="feedback bad";feedback.textContent="Speech recognition is not available in this browser. Please type your answer.";return;}
+    const rec=new SpeechRecognition();rec.lang="en-US";rec.interimResults=false;rec.maxAlternatives=1;
+    feedback.className="feedback";feedback.textContent="Listening… Please say the full sentence.";
+    rec.onresult=e=>{input.value=e.results[0][0].transcript;feedback.className="feedback good";feedback.textContent="I heard: "+input.value;};
+    rec.onerror=()=>{feedback.className="feedback bad";feedback.textContent="Could not hear clearly. Please try again or type your answer.";};
+    rec.start();
+  });
+  tasksRoot.appendChild(task);
+ });
+ document.getElementById("prevVideo").disabled=currentVideo===0;
+ document.getElementById("prevVideo").style.opacity=currentVideo===0?".45":"1";
+ document.getElementById("nextVideo").textContent=currentVideo===lessons.length-1?"Back to first video ↺":"Next video →";
+}
+function playCheer(){
+ try{
+  const Ctx=window.AudioContext||window.webkitAudioContext;if(!Ctx)return;
+  const ctx=new Ctx();const now=ctx.currentTime;
+  [[523.25,0],[659.25,.13],[783.99,.26],[1046.5,.4]].forEach(([freq,delay])=>{
+   const osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="sine";osc.frequency.value=freq;
+   gain.gain.setValueAtTime(.0001,now+delay);gain.gain.exponentialRampToValueAtTime(.12,now+delay+.025);gain.gain.exponentialRampToValueAtTime(.0001,now+delay+.19);
+   osc.connect(gain);gain.connect(ctx.destination);osc.start(now+delay);osc.stop(now+delay+.2);
+  });
+  setTimeout(()=>ctx.close(),1000);
+ }catch(e){}
+}
+document.getElementById("prevVideo").addEventListener("click",()=>{if(currentVideo>0){currentVideo--;render();}});
+document.getElementById("nextVideo").addEventListener("click",()=>{currentVideo=currentVideo===lessons.length-1?0:currentVideo+1;render();});
+render();
+</script>
+</body>
+</html>
